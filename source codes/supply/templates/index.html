@@ -1,0 +1,440 @@
+
+ <!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Supply Chain</title>
+ 
+ </head>
+ <link rel="stylesheet" href="/static/css/custom.css">
+ 
+ <body>
+     <style>
+         button {
+   padding: 10px 20px;
+   font-size: 16px;
+   cursor: pointer;
+   background-color: #4CAF50;
+   color: white;
+   border: none;
+   border-radius: 5px;
+ }
+ img{
+    object-fit: none;
+ }
+ 
+ .dialog {
+   display: none; 
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.5);
+   justify-content: center;
+   align-items: center;
+   z-index: 999;
+ }
+ 
+ .dialog-content {
+   background-color: white;
+   padding: 30px;
+   color: black;
+   border-radius: 10px;
+   text-align: center;
+   width: fit-content;
+ }
+ 
+ .close-btn {
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   font-size: 24px;
+   cursor: pointer;
+ }
+ .activePoint{
+    background-color: #4CAF50;
+    color: white;
+ }
+ 
+ button#closeDialog {
+   background-color: #f44336;
+   color: white;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+ }
+ label {
+      padding: 10px;
+      margin-left: 5px;
+
+      background: white;
+      background-color: white;
+      border-radius: 10px 10px ;
+  
+    }
+    input[type='radio']{
+      padding: 5px;
+      margin-left: 5px;
+      border-radius: 10px 10px ;
+    }
+
+    input[type='radio']:checked:after{
+      padding: 5px;
+      margin-left: 30px;
+      accent-color: black;
+
+      border-radius: 10px 10px ;
+    }
+ 
+ button#closeDialog:hover {
+   background-color: #d32f2f;
+ }
+     </style>
+       <div id="dialogBox" class="dialog">
+         <div class="dialog-content">
+             <img  style="width: 80px;height: 80px; border-radius: 10px;background-color: #c54f66;" id="imagePoint" />
+    
+             <p id="username" style="color: black;"></p>
+ 
+         </div>
+       </div>
+ 
+       
+     <div style="display: flex;justify-content: center;">
+         <div style="display: flex;justify-content: center;background-color: white;width: fit-content;border-radius: 10px 10px;">
+             <input id="searchBar" type="text" oninput="point(this)">
+             <img src="/static/img/search.svg" style="padding: 10px;">
+         </div>
+         
+     </div>
+     <div style=" display: flex;justify-content: center;">
+         
+         <div id="container" style="display: grid;justify-content: center; margin-top: 150px;grid-template-columns:repeat(2,1fr);
+         height: auto;background-color: white;border-radius: 10px 10px;box-shadow: 3px 3px 3px 3px #00000071;">
+             <div class="container1" id="container1"
+                 style="padding: 10px;display: none;justify-content: center;width: 350px;">
+                 <div id="container1">
+                     <p style="font-weight: bolder;font-size: 25px;">Sign Up</p>
+                     <div class="editText">
+                         <img src="/static/img/user.svg">
+                         <input type="text" placeholder="Name" id="name1" required
+                             style="background-color: transparent;">
+                         &nbsp;&nbsp; &nbsp;&nbsp;
+                     </div>
+                     <div class="editText">
+                         <img src="/static/img/mail.svg">
+                         <input type="text" placeholder="Mail" id="mail1" required
+                             style="background-color: transparent;">
+                         &nbsp;&nbsp; &nbsp;&nbsp;
+                     </div>
+                     <div class="editText">
+                         <img src="/static/img/mobile.svg">
+                         <input type="number" placeholder="Mobile" id="mobile1" required
+                             style="background-color: transparent;">
+                         &nbsp;&nbsp; &nbsp;&nbsp;
+                     </div>
+                     <div class="editText">
+                         <img src="/static/img/password.svg">
+                         <input type="password" placeholder="Password" id="passwordNothing" required
+                             style="background-color: transparent;">
+                         <img src="/static/img/eye closed.svg" id="imageClick">
+                     </div>
+                     <div class="editText"
+                         style="display: flex;justify-content: end;align-items: flex-end;height: 100px;">
+                         <img src="/static/img/location.svg" style="filter: grayscale(100%);">
+                         <textarea type="text" placeholder="Address" style="background-color: transparent;" id="address1"
+                             required></textarea>
+                         &nbsp;&nbsp; &nbsp;&nbsp;
+                     </div>
+ 
+                     <div style="display: flex;justify-content: center;">
+                         <button id="signUpBtn" class="btn">Sign up</button>
+                     </div>
+                 </div>
+             </div>
+ 
+             <div class="container2" id="container2"
+                 style="padding: 10px;display: none;justify-content: center; height: auto;">
+                 <div style="padding-top: 50%;">
+                     <p style="color: white;">Already have an account ?</p>
+                     <div style="display: flex;justify-content: center;">
+                         <button class="btnDecor" type="submit" id="btnSignIn">
+                             Sign In
+                         </button>
+                     </div>
+                 </div>
+             </div>
+ 
+ 
+             <!-- Sign in Page -->
+             <input id="csrf" type="hidden" value='{% csrf_token %}' />
+             <div class="container2" id="container4"
+                 style="padding: 10px;display: flex;justify-content: center; height: auto; border-radius: 10px 0px 0px 10px;">
+                 <div style="padding-top: 35%;">
+                     <p style="color: white;">Don't have an account ?</p>
+ 
+                     <div style="display: flex;justify-content: center;">
+                         <button class="btnDecor" id="signInBtn">
+                             Sign up
+                         </button>   
+                     </div>
+                 </div>
+ 
+             </div>
+ 
+ 
+             <div class="container1" id="container3"
+                 style="padding: 10px;display: flex;justify-content: center;width: 350px;   ">
+                 <div id="container3">
+                     <form action="{% url 'loginBtn' %}" method="post">
+                         {% csrf_token %}
+                         <p style="font-weight: bolder;font-size: 25px;">Sign in </p>
+                         <div class="editText">
+                             <img src="/static/img/mail.svg">
+                             <input type="text" placeholder="Mail" name="email" onfocus="changer()"
+                                 style="background-color: transparent;">
+                             &nbsp;&nbsp; &nbsp;&nbsp;
+                         </div>
+                         <div class="editText">
+                             <img src="/static/img/password.svg">
+                             <input type="password" placeholder="Password" name="password" id="passwordSomething"
+                                 onfocus="changer()" style="background-color: transparent;">
+                             <img src="/static/img/eye closed.svg" id="imageClick2">
+                         </div>
+                         {% if message %}
+                         <script>
+                             window.onload = function () {
+                                 var message = "{{message}}"
+                                 messagePoint(message)
+                             }
+                         </script>
+                         {% endif %}
+                         <div style="display: flex;justify-content: center;">
+                             <button class="btn" type="submit">Sign In</button>
+                         </div>
+                     </form>
+                 </div>
+ 
+             </div>
+ 
+ 
+         </div>
+     </div>
+     </div>
+     <div id="snackBar">messsage something</div>
+     <script>
+         window.addEventListener('click',()=>{
+         dialogBox.style.display = "none";
+     })
+ 
+         const image = document.getElementById('imageClick')
+         const image2 = document.getElementById('imageClick2')
+         var snack = document.getElementById('snackBar')
+         image.addEventListener('click', () => {
+ 
+             click(image, document.getElementById('passwordNothing'))
+         })
+         image2.addEventListener('click', () => {
+             click(image2, document.getElementById('passwordSomething'))
+         })
+ 
+         function click(image, passwordVis) {
+             if (passwordVis.type == "password") {
+                 passwordVis.type = "text"
+                 image.src = '/static/img/eye open.svg'
+             } else {
+                 image.src = '/static/img/eye closed.svg'
+                 passwordVis.type = "password"
+             }
+         }
+         const btnSignIn = document.getElementById("btnSignIn")
+ 
+         btnSignIn.addEventListener('click', () => {
+             forme()
+         })
+         function forme() {
+             const container = document.getElementById('container')
+             const container1 = document.getElementById('container1')
+             const container2 = document.getElementById('container2')
+             container1.style.display = 'none'
+             container2.style.display = 'none'
+             const container3 = document.getElementById('container3')
+             const container4 = document.getElementById('container4')
+             container3.style.display = 'flex'
+             container4.style.display = 'flex'
+         }
+         const signInBtn = document.getElementById("signInBtn")
+         signInBtn.addEventListener('click', () => {
+ 
+             forto()
+         })
+         function forto() {
+             const container = document.getElementById('container')
+             const container1 = document.getElementById('container1')
+             const container2 = document.getElementById('container2')
+             container1.style.display = 'flex'
+             container2.style.display = 'flex'
+             const container3 = document.getElementById('container3')
+             const container4 = document.getElementById('container4')
+             container3.style.display = 'none'
+             container4.style.display = 'none'
+         }
+ 
+ 
+         const signUpBtn = document.getElementById('signUpBtn')
+         signUpBtn.addEventListener('click', () => {
+             var name = document.getElementById('name1')
+             var mail = document.getElementById('mail1')
+             var mobile = document.getElementById('mobile1')
+             var address = document.getElementById('address1')
+             var password = document.getElementById('passwordNothing')
+             var name1 = name.value
+             var mail1 = mail.value
+             var mobile1 = mobile.value
+             var address1 = address.value
+             var password1 = password.value
+ 
+             var csrf_tok = document.getElementById('csrf')
+             console.log(csrf_tok.value)
+             if (name1.length == 0) {
+                 messagePoint("Please enter your name")
+             } else if (mail1.length == 0) {
+                 messagePoint("Please enter your Mail-Id")
+             } else if (mobile1.length == 0) {
+                 messagePoint("Please enter your Mobile number")
+             } else if (address1.length == 0) {
+                 messagePoint("Please enter your Address")
+             } else if (password1.length == 0) {
+                 messagePoint("Please enter your Passwors")
+             } else {
+                 name.value = ""
+                 mail.value = ""
+                 mobile.value = ""
+                 address.value = ""
+                 password.value = ""
+                 const data = {
+                     csrf_token: csrf_tok
+                 }
+                 fetch(`http://127.0.0.1:8000/signupSubmit/?email=${mail1}&password=${password1}&mobile=${mobile1}&name=${name1}&address=${address1}`, {
+                     method: 'GET',
+                     headers: {
+                         'Content-Type': 'application/json',
+                         'X-CSRFToken': csrf_tok
+                     }
+                 })
+                     .then(response => {
+                         if (!response.ok) {
+                             throw new Error('Network response was not ok');
+                         }
+                         return response.json();
+                     })
+                     .then(respo => {
+                         if (respo.status === 'success') {
+ 
+                             messagePoint(respo.message);
+                             if (respo.message == 'Success') {
+                                 forme()
+                             }
+                         } else {
+                             messagePoint('Signup failed: ' + respo.message);
+                         }
+                     })
+                     .catch(error => {
+                         console.error('Error:', error);
+                         messagePoint('An error occurred during signup.'); // Display generic error message
+                     });
+             }
+         })
+         function messagePoint(messageNothing) {
+             if(messageNothing!="Success"){
+                     var audio=new Audio('/static/sound/erro2.mp3')
+                     audio.play()
+             }
+ 
+             snack.className = "show"
+             snack.innerText = messageNothing
+             setTimeout(() => { snack.className = snack.className.replace("show", ""); }, 3000)
+         }
+         const openDialogBtn = document.getElementById("openDialogBtn");
+ const dialogBox = document.getElementById("dialogBox");
+ const closeDialogBtn = document.getElementById("closeDialogBtn");
+ const closeDialog = document.getElementById("closeDialog");
+ 
+ 
+ 
+ closeDialogBtn.addEventListener("click", ()=> {
+   dialogBox.style.display = "none";
+ });
+ 
+ 
+ closeDialog.addEventListener("click", ()=> {
+   dialogBox.style.display = "none";
+ });
+ function point(){
+     var doc=document.getElementById('searchBar').value
+     if(doc.length!=0){
+         var value=doc
+ 
+         dialogBox.style.display = "flex";
+         fetch(`/searchOrder?search=${doc}`,{
+             'method':'GET'
+         }).then(json=>json.json()).then(view=>{
+ 
+          
+             if(view.data.length==0){
+                 const image= document.getElementById('imagePoint')
+                 image.src=`https://img.freepik.com/free-vector/removing-goods-from-basket-refusing-purchase-changing-decision-item-deletion-emptying-trash-online-shopping-app-laptop-user-cartoon-character_335657-2566.jpg`
+                image.style.objectFit='cover'
+                 document.getElementById('username').innerHTML=``
+                }else{
+                 view.data.forEach(item=>{
+                    var accepted=""
+                    var shipped=""
+                    var delivered=""
+                    var indelivery=""
+                    if(item.status=="Accepted"){
+                        accepted=`class="activePoint" checked`
+                    }else if(item.status == 'Shipped'){
+                        shipped=`class="activePoint" checked`
+                    }else if(item.status == 'In Delivery'){
+                        indelivery=`class="activePoint" checked`
+                    }else if(item.status == 'Delivered'){
+                        delivered=`class="activePoint" checked`
+                    }
+             document.getElementById('imagePoint').src=item.image      
+             document.getElementById('username').innerHTML=`
+             <p ><b>Order id :</b> &nbsp;${item.id}</p>
+             <p ><b>Order Status :</b> &nbsp;${item.status}</p>
+             <p ><b>User Name :</b> &nbsp;${item.name}</p>
+          <p ><b>Product name :</b> &nbsp;${item.pname}</p>
+             <p ><b>Qty :</b> &nbsp;${item.qty}</p>
+             <p><b>Cost :</b> &nbsp;₹ ${item.cost}/-</p>
+             <p><b>Total :</b> &nbsp;₹ ${item.total}/-</p>
+            <div style="display: flex;justify-content: start;" >
+                <b>Order Track</b>
+                </div>
+                     <div style="display: flex;justify-content: center;" >
+             <input type="radio" id="Ordered" name="Ordered" value="Accepted" ${accepted}><label ${accepted} for="Ordered" >Accepted</label>
+          <input type="radio" id="Shipped" name="Shipped" value="Shipped" ${shipped}><label for="Shipped" ${shipped} >Shipped</label>
+          <input type="radio" id="In_Delivery" name="In Delivery" value="In Delivery" ${indelivery}><label ${indelivery} for="In_Delivery">In&nbsp;Delivery</label>
+          <input type="radio" id="Delivered" name="Delivered" value="Delivered" ${delivered}><label for="Delivered"  ${delivered} >Delivered</label>
+          </div>
+             `
+             })
+             }
+         })
+     }else{
+         dialogBox.style.display = "none";
+         
+     }
+  
+ }
+
+     </script>
+ </body>
+ 
+ </html>

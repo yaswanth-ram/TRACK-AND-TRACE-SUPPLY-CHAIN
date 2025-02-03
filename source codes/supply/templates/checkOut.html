@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <link rel="stylesheet" href="/static/css/custom.css">
+
+<body>
+    <style>
+        /* linear-gradient(180deg, rgba(77, 27, 134, 0.94) 6.37%, #6A2D68 100%) */
+        body {
+            background: url(https://capturly.com/blog/wp-content/uploads/2018/01/eCommerce-website-search-customer-experience.jpg);
+            user-select: none;
+            background-repeat:no-repeat ;
+            -moz-user-select: none;
+            background-size:cover ;
+            -webkit-user-select: none;
+            justify-items: center;
+        }
+
+        .cover {
+            background:linear-gradient(180deg, rgba(77, 27, 134, 0.344) 6.37%, #50004d 100%) ;
+            border: none;
+            padding: 1%;
+            border-radius: 10px 10px;
+            display: inline;
+            color: #FFF;
+            border-color: aliceblue;
+            padding: 10px 20px;
+            justify-content: center;
+        }
+
+        .qtyArea {
+            display: flex;
+            justify-content: end;
+        }
+
+        .qtyArea button {
+            background-color: #FFF;
+            border: 0px;
+            border-radius: 20px;
+            padding: 10px;
+            margin: 2px;
+            width: auto;
+        }
+
+        .qtyArea p {
+            background-color: #FFF;
+            border: 0px;
+            border-radius: 20px;
+            color: black;
+            padding: 10px;
+            margin: 2px;
+            width: auto;
+        }
+
+        table p {
+            width: 100%;
+            display: flex;
+            align-items: end;
+            justify-self: end;
+            justify-content: end;
+        }
+    </style>
+
+    <div style="display: flex;justify-content: center;margin-top:   10%;">
+        <div class="cover" >
+            <p style="font-weight: bolder;">Check out</p>
+            <img style="margin-left: 20px;margin-right: 20px; border-radius: 10px 10px;background-color: whitesmoke;padding: 10px;"
+                src="{{image}}" alt="" width="200px" height="200px">
+            <div style="background-color: white;padding: 0.2px;margin-top:20px ;"></div>
+            <p id="cost" style="display:none;">{{cost}}</p>
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        Product Name
+                    </td>
+                    <td>
+                        <p class="data">
+                            {{name}}
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Cost
+                    </td>
+                    <td class="data">
+                        <p>
+                            ₹ {{cost}}/-
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Quantity
+                    </td>
+                    <td>
+                        <div class="qtyArea">
+                            <button id="Decreament">
+                                -
+                            </button>
+                            <p id="result">0</p>
+    
+                            <button id="increament">
+                                +
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td class="data">
+                        <p id="Total">
+                            ₹ 0 /-
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+              
+                <form action="{% url 'submit' %}" method="post" >
+                    {%csrf_token %}
+                    <input name="pname" value="{{name}}"  type="hidden"/>
+                    <input name="imageId" value="{{imageId}}"  type="hidden"/>
+                    <input id="getQty" name="qty" value="{{qty}}"  type="hidden"/>
+                    <input name="cost" value="{{cost}}"  type="hidden"/>
+                    <input id="totalPoint" name="total" value="total"  type="hidden"/>
+                    <button id="Submit"
+                style="width: 100%;padding: 10px;border: 0sp;border-radius: 5px;border-width: 0px;display: none;">
+                Buy now
+            </button>
+              
+        </div>
+    </div>
+
+    <script>
+        function onsubmit(element) {
+            const submit = element.querySelector('form');
+            if (submit) {
+                alert("ia min")
+                submit.submit()
+            }
+        }
+        var data = 0
+        var total = 0
+        const text = document.getElementById("result")
+        var cost = document.getElementById("cost")
+        var totalP = document.getElementById("Total")
+        var submit = document.getElementById("Submit")
+        var getQty = document.getElementById("getQty")
+        var storeinvisible = document.getElementById("totalPoint");
+
+
+        document.getElementById("increament").onclick = function () {
+            data++
+            text.innerText = data
+            totalCheck()
+
+        }
+        document.getElementById("Decreament").onclick = function () {
+            if (data > 0) {
+                data--
+                text.innerText = data
+                totalCheck()
+            }
+        }
+        function totalCheck() {
+            getQty.value = data
+            var check = Number(cost.innerText) * data
+            storeinvisible.value = check
+            if (check > 0) {
+                submit.style.display = 'block'
+            } else {
+                submit.style.display = 'none'
+            }
+            totalP.innerHTML = "₹ " + check + "/-"
+        }
+
+
+    </script>
+</body>
+
+</html>
